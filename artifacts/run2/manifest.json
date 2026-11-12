@@ -1,0 +1,26 @@
+{
+  "format": "wsp-sparse-raw-bytes-v1",
+  "tensors": [
+    {
+      "key": "tensor_0",
+      "name": "model.language_model.layers.23.mlp.down_proj.weight",
+      "shape": [
+        1024,
+        3584
+      ],
+      "dtype": "torch.bfloat16",
+      "entries": 1190500,
+      "base_sha256": "1866748ce87d32cfee34891d2fa393fdfeee77447935f6a31d036e4b80332a48",
+      "edited_sha256": "860a098f9440169b95305bee0367c1f1d31be5106d572f6e81c0b2f1f80bbd47"
+    }
+  ],
+  "base_model": {
+    "model_id": "Qwen/Qwen3.5-0.8B",
+    "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+    "license": "apache-2.0"
+  },
+  "frozen_output_sha256": {
+    "model.language_model.embed_tokens.weight": "3247e63f0f265462e2fba5316dfb2819941ea8ed62ab5b2c4904e4aab5b9d7aa",
+    "model.language_model.norm.weight": "30832e6642a9c1555485d5c9553a35e539278c33ce3b7a9665e06cd2c5598381"
+  }
+}

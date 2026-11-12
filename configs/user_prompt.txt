@@ -1,0 +1,46 @@
+TASK
+Improve Qwen3.5-0.8B's mathematics accuracy by calculating direct weight edits. Diagnose its failures, choose a useful correction, and measure it. Known interpretability and editing methods are welcome: the objective is useful accuracy, not a new algorithm or a causal-proof campaign.
+
+RESEARCH SUPPORT
+The model can get the arithmetic wrong, find a solution but keep reconsidering it, loop repetitively, or finish without a usable final answer. Repairing repetition/non-finishing is a legitimate improvement, but shorter wrong answers are not success.
+
+1. Establish a representative practice baseline. Use a small worthwhile batch (for example 12-24 questions), including MATH across subjects and difficulties rather than only easy GSM8K. Inspect excerpts, reference solutions and grades. Compare candidates on the same questions/settings; keep separate questions for checking transfer. All answers retain the full32768-token allowance.
+2. Use dense observations. Teacher-forced reference solutions and your own successful/failing continuations provide many token-level observations cheaply. Where possible compare productive and failing states for the same problem, not merely easy versus hard questions. Preserve the actual reasoning prefix and relevant completion boundary. Collect only the positions/layers needed, while retaining full context when it matters.
+3. Use weights and activations together. Identify relevant components and derive an intervention from their behavior. Activation contrasts and signed, layer-consistent quantities are more informative than raw vector norms alone. Subtracting a component along a direction is different from suppressing an entire neuron column. Check what the proposed change does at observed states before spending a generation call. Choose the locations, directions and strengths yourself.
+4. Distinguish solving, ending reasoning, writing the final answer and ending the message. Compare genuinely ready-to-answer states with earlier productive reasoning and the onset of repetition, not only deep-loop tails. Use observed behavior and next-token probabilities to judge whether a correction preserves useful reasoning and helps produce a correct answer. A stronger diagnostic proxy alone is not success.
+5. Test changes large enough to have a measurable effect and back off if they hurt. Construct variants from original weights or an explicitly saved best checkpoint, not accumulated failed edits. Calibrate on the same checkpoint that will receive the edit. Keep the best measured weights and concise findings under /work; do not replace them with a worse latest trial. Judge actual correctness and normal completion separately, report percentages with question counts, and investigate a different mechanism if one route plateaus. Exhaustive ablations or significance campaigns are not required.
+
+RULES AND ARCHITECTURE
+Change only finite values of existing weight tensors, preserving names and shapes. Model architecture, tokenizer, scored prompts, thinking mode and generation settings stay fixed. Submit proposed changes through save_edit; the tool validates them and reports errors explicitly. No training, gradients or optimizers. Python may analyze weights/data/observations but cannot run or simulate the target network; use the forward tool.
+The text backbone has24 blocks, residual width1024 and SwiGLU MLP width3584; vocabulary248320. RMSNorm is zero-centered: its effective scale is1 plus the stored weight. Full-attention blocks3,7,11,15,19,23 have8 query heads,2 KV heads, head size256 and gated output. The other18 blocks use Gated DeltaNet with16 heads of size128. Architecture indices are not recommendations for edit locations. /weights/config.json and all original tensors are available.
+Every scored answer allows32768 output tokens with thinking enabled, temperature0.6, top_p0.95, top_k20 and presence_penalty1.5. Shorter requests are rejected. The scored user message is the problem followed by a newline and "Please reason step by step, and put your final answer within \boxed{}.". In Python, construct that suffix with chr(10) and chr(92), or a raw string for the backslash command, to avoid a backspace escape. The last boxed answer is graded. For speed reduce question counts, not answer length. Short cycles pause between completed actions and resume the same local investigation; there is no requirement to finish within one cycle.
+
+DATA AND PYTHON
+/weights is read-only. /practice contains gsm8k_train.jsonl (7469 rows), math_train.jsonl (7275 rows) and aime.jsonl (714 rows). Rows have id, source, problem and answer; GSM8K/MATH also have solution, and MATH has subject/level. Use exact IDs from the files. Benchmark data, prior experiment work and finished edited weights are not mounted.
+/work is writable. Python is CPU-only, without network access. Variables, imports and files persist across calls and cycle pauses. Kernel loss is reported explicitly; save important code, notes, data and good edits as files too.
+Available: torch, np, json, Path, tok (the tokenizer), NumPy, SciPy, scikit-learn, pandas, SymPy, NetworkX and safetensors.
+Helpers: NAMES lists tensor names; load_original(name) returns original float32 CPU weights; load(name) returns the current edit if present, otherwise original; save_edit(name,tensor) validates and saves an edit; drop_edit(name) restores that tensor; edited() lists saved tensor names.
+Each Python call allows1200 seconds and96GiB address space. The last expression is displayed. Output is bounded at12000 characters with a full log path. Print compact summaries, token IDs and short excerpts instead of whole arrays or vocabulary lists. Use the actual tokenizer rather than guessing special-token IDs.
+
+ACTIONS
+Use the response format specified by the harness. These examples illustrate payloads, not wrappers:
+
+```python
+print(len(NAMES))
+```
+
+```forward
+{"type":"generate","model":"original","problems":["gsm8k_train_0"],"n":1,"max_tokens":32768}
+```
+model may be original, edited or both. Up to512 total generations (items times n); with both, capacity is shared between models. The seed is fixed per problem/sample. Rows in /work/gen_N_MODEL.jsonl include id, sample, correct, tokens, finish_reason, thinking_closed, grading_status, extracted, problem and text. correct is a boolean, including False; there is no score alias. Read JSONL by actual file lines, not string.splitlines(), which can split Unicode separators inside a valid JSON string.
+You may also provide prompts:["exact user message",...] with or instead of problems. These messages are used as written and are ungraded; use practice IDs for scored checks.
+Optional activations: {"layers":[0,1],"mlp":true}. This returns prompt-last and first8192-answer-token means by replaying the exact sampled IDs with the same checkpoint. This observation window does not shorten generation. Files are in /work/gen_N_MODEL_acts with IDs, boundaries and checkpoint identity.
+
+```forward
+{"type":"teacher_forced","model":"original","texts":["text to observe"],"return":{"hidden_states":[0,1],"mlp_act":[0],"token_logprobs":true,"topk":5}}
+```
+model may be original or edited. Instead of texts, use chats (lists of role/content messages) or contexts_file pointing to a JSON list of texts/chats under /work. Limits:1024 texts,32768 tokens each,524288 total input tokens and6GB of returned arrays.
+Chats use the target template with enable_thinking=true by default. Plain assistant content represents a completed assistant message's final-answer content. For ongoing reasoning, render the actual scored user message with tok.apply_chat_template(user_messages, tokenize=False, add_generation_prompt=True, enable_thinking=True), append the reasoning continuation, and supply raw text. Do not insert ongoing reasoning as plain assistant content.
+Returns are .npy files under /work/fwd_N with meta.json. Default hidden/MLP arrays are full per-token data: hidden_L[B,T,1024], mlp_L[B,T,3584]. hidden_0 is embedding output; hidden_L is after block L-1, BEFORE final norm; L ranges0..24. hidden_24, not hidden_23, is the final residual. mlp_L is the input to block L's down_proj; L ranges0..23. Example indices are interface examples, not edit locations.
+input_ids[B,T] and valid_tokens[B,T] identify real tokens; arrays are right-padded with zero. Use masks and recorded lengths. token_logprobs[B,T] scores the observed token given earlier positions; position0 and padding are invalid in logprob_valid. topk_ids and topk_logprobs[B,T,K] predict the NEXT token; K ranges0..50. Apply the zero-centered final norm when manually computing logits, and verify against actual top-k observations. Normalizing a mean is not the same as averaging normalized token states.
+Optional attn_layers returns attention[B,8,T,T] for full-attention layers, limited to2 texts of2048 tokens. For summaries, request return options "aggregation":"mean","tail_tokens":128; hidden/MLP arrays then have shape[B,width]. Oversized requests fail explicitly; full data are never silently replaced by means. Metadata documents all files and coordinates.

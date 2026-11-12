@@ -1,0 +1,160 @@
+{
+  "benchmark": {
+    "name": "MATH-500",
+    "questions": 500,
+    "samples_per_question": 4,
+    "samples_per_model": 2000,
+    "metric": "Mean accuracy over four samples per question, not pass@4.",
+    "dataset_sha256": "7b6d74c4d03dac8e8597d42fd032babda2cc776cd66020a067580f64281a5f1e",
+    "sampling": {
+      "samples_per_problem": 4,
+      "max_tokens": 32768,
+      "temperature": 0.6,
+      "top_p": 0.95,
+      "top_k": 20,
+      "presence_penalty": 1.5,
+      "generation_seed": 0,
+      "enable_thinking": true
+    }
+  },
+  "editor": {
+    "model_id": "Qwen/Qwen3.8-Flash-Next-FP8",
+    "revision": "7fb48d708ca6cd8eeed8f4db0433be18af96984f"
+  },
+  "target": {
+    "model_id": "Qwen/Qwen3.5-0.8B",
+    "revision": "2fc06364715b967f1860aea9cf38778875588b17"
+  },
+  "original": {
+    "accuracy_percentage": 7.7,
+    "correct_samples": 154,
+    "correct_and_finished": 144,
+    "metrics": {
+      "problems": 500,
+      "graded_problems": 500,
+      "ungraded_samples": 0,
+      "samples": 2000,
+      "samples_per_problem": 4,
+      "accuracy": 0.077,
+      "problem_bootstrap_95ci": [
+        0.059,
+        0.096
+      ],
+      "cut_at_token_limit": 0.928,
+      "mean_tokens": 30857.5105,
+      "thinking_closed": 0.073,
+      "missing_box": 1573
+    },
+    "checkpoint_sha256": {
+      "model.safetensors-00001-of-00001.safetensors": "04b1c301231dd422b8860db31311ab2721511346a32cb1e079c4c4e5f1fe4696"
+    },
+    "scores": {
+      "path": "results/scores/original.jsonl.gz",
+      "sha256": "9e4d452b657785b7d98ca3420f0a00f17682f3c02f7228769b021d018c59de67"
+    }
+  },
+  "runs": {
+    "run1": {
+      "accuracy_percentage": 50.4,
+      "correct_samples": 1008,
+      "correct_and_finished": 1007,
+      "metrics": {
+        "problems": 500,
+        "graded_problems": 500,
+        "ungraded_samples": 0,
+        "samples": 2000,
+        "samples_per_problem": 4,
+        "accuracy": 0.504,
+        "problem_bootstrap_95ci": [
+          0.4675,
+          0.5395
+        ],
+        "cut_at_token_limit": 0.249,
+        "mean_tokens": 14514.8795,
+        "thinking_closed": 0.9995,
+        "missing_box": 720
+      },
+      "checkpoint_sha256": {
+        "model.safetensors": "3eaa95ec7fca9d3225004f61b7972bd92a76a273f415393f8e5f3835656eddc8"
+      },
+      "scores": {
+        "path": "results/scores/run1.jsonl.gz",
+        "sha256": "61f96bd277d7613e26eac3c979830601ecf54dc235f5280b20c3a6ccc6411f19"
+      },
+      "edit": {
+        "delta": {
+          "path": "artifacts/run1/edit.npz",
+          "sha256": "7ceb1e1ec031327736e14203ff9e0d94660198e3d6110f5321c1772c63a2965b"
+        },
+        "manifest": {
+          "path": "artifacts/run1/manifest.json",
+          "sha256": "ecc6576ebdd202030b409baf77cc30f3c4ed0994f579a28a08ad8555cbe8189f"
+        }
+      },
+      "research": {
+        "python_calls": 395,
+        "forward_calls": 38,
+        "final_turn": 438,
+        "own_note_handoffs": 10,
+        "initial_state": "original_weights_empty_workspace",
+        "research_guidance_messages": 0,
+        "benchmark_feedback_to_editor": false,
+        "model_selected_final": true
+      },
+      "gain_percentage_points": 42.7
+    },
+    "run2": {
+      "accuracy_percentage": 51.55,
+      "correct_samples": 1031,
+      "correct_and_finished": 1031,
+      "metrics": {
+        "problems": 500,
+        "graded_problems": 500,
+        "ungraded_samples": 0,
+        "samples": 2000,
+        "samples_per_problem": 4,
+        "accuracy": 0.5155,
+        "problem_bootstrap_95ci": [
+          0.479,
+          0.5525
+        ],
+        "cut_at_token_limit": 0.1355,
+        "mean_tokens": 13864.042,
+        "thinking_closed": 0.995,
+        "missing_box": 756
+      },
+      "checkpoint_sha256": {
+        "model.safetensors": "bf92b23dde5140adf0cfc740264e3efc57f583e6fd9489499226c9fc0b84393e"
+      },
+      "scores": {
+        "path": "results/scores/run2.jsonl.gz",
+        "sha256": "bddec567d149965771a35829f3e180dbb22362a9d69b4485358f384923eb9866"
+      },
+      "edit": {
+        "delta": {
+          "path": "artifacts/run2/edit.npz",
+          "sha256": "7011f4aa7bd27c0c269f6a84b39607ab188c887fef4d049e69cdb72721b57e0f"
+        },
+        "manifest": {
+          "path": "artifacts/run2/manifest.json",
+          "sha256": "1f9b00c75c30fdf9f22a7e20f90bfb4b37c39ffa7e765685748a8592f358989e"
+        }
+      },
+      "research": {
+        "python_calls": 152,
+        "forward_calls": 23,
+        "final_turn": 180,
+        "own_note_handoffs": 4,
+        "initial_state": "original_weights_empty_workspace",
+        "research_guidance_messages": 0,
+        "benchmark_feedback_to_editor": false,
+        "model_selected_final": true
+      },
+      "gain_percentage_points": 43.85
+    }
+  },
+  "prompt_sha256": {
+    "configs/system_prompt.txt": "6399619d61e3696d328a37aac026e048ca10592d34ee16ca58da687c5d55fdcb",
+    "configs/user_prompt.txt": "05279befe0d1636d80d7bcd77713a2c8d17611edc6e37ec0e686f8d8f7d1f20e"
+  }
+}

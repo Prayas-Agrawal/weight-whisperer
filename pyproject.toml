@@ -1,0 +1,37 @@
+[project]
+name = "wsp"
+version = "0.1.0"
+description = "Autonomous weight-space editing with an open-weight language model"
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "datasets==5.1.0",
+    "httpx>=0.28.1,<1",
+    "huggingface-hub>=1.31.0,<3",
+    "math-verify==0.9.0",
+    "numpy>=2,<3",
+    "psutil==7.2.2",
+    "safetensors>=0.6.2,<1",
+    "scipy>=1.15,<2",
+    "scikit-learn>=1.6,<2",
+    "transformers==5.20.2",
+    "torch==2.14.0",
+]
+
+[project.optional-dependencies]
+inference = ["vllm==0.33.0"]
+
+[dependency-groups]
+dev = ["pytest==9.2.0", "ruff==0.17.4"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

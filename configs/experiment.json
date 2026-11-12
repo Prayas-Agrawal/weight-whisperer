@@ -1,0 +1,51 @@
+{
+  "sampling": {
+    "samples_per_problem": 1,
+    "max_tokens": 32768,
+    "temperature": 0.6,
+    "top_p": 0.95,
+    "top_k": 20,
+    "presence_penalty": 1.5,
+    "generation_seed": 0,
+    "enable_thinking": true
+  },
+  "research_engine": {
+    "gpu_memory_utilization": 0.2,
+    "engine": {
+      "name": "compiled",
+      "max_num_seqs": 64,
+      "enforce_eager": false
+    }
+  },
+  "evaluation": {
+    "physical_gpus": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "gpu_memory_utilization": 0.3,
+    "minimum_remaining_gpu_gib": 8,
+    "engine": {
+      "name": "compiled-full-math500",
+      "max_num_seqs": 96,
+      "enforce_eager": false
+    },
+    "max_num_batched_tokens": 8192,
+    "problems_per_batch": 24,
+    "samples_per_problem": 4
+  },
+  "tools": {
+    "max_practice_generations_per_call": 512,
+    "capture_max_texts": 1024,
+    "capture_max_input_tokens": 32768,
+    "capture_max_total_tokens": 524288,
+    "python_timeout_seconds": 1200,
+    "forward_timeout_seconds": 14400
+  },
+  "handoff_turns": 40,
+  "resources": {
+    "minimum_free_disk_gib": 100,
+    "minimum_available_ram_gib": 96
+  }
+}

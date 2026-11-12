@@ -1,0 +1,65 @@
+{
+  "editor": {
+    "model_id": "Qwen/Qwen3.8-Flash-Next-FP8",
+    "revision": "7fb48d708ca6cd8eeed8f4db0433be18af96984f",
+    "weight_bytes": 185523317458,
+    "license": "qwen-community-1.0",
+    "physical_gpus": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "tensor_parallel_size": 4,
+    "gpu_memory_utilization": 0.6,
+    "max_model_len": 1000000,
+    "max_num_seqs": 2,
+    "enforce_eager": false,
+    "reasoning_parser": "qwen3",
+    "structured_outputs_config": {
+      "enable_in_reasoning": true
+    },
+    "port": 18801,
+    "hf_overrides": {
+      "text_config": {
+        "rope_parameters": {
+          "mrope_interleaved": true,
+          "mrope_section": [
+            11,
+            11,
+            10
+          ],
+          "rope_type": "yarn",
+          "rope_theta": 10000000,
+          "partial_rotary_factor": 0.25,
+          "factor": 4.0,
+          "original_max_position_embeddings": 262144
+        }
+      }
+    },
+    "generation": {
+      "reasoning_effort": "xhigh",
+      "max_tokens": 393216,
+      "temperature": 1.0,
+      "top_p": 0.95,
+      "top_k": 20,
+      "min_p": 0.0,
+      "presence_penalty": 0.0,
+      "repetition_penalty": 1.0,
+      "chat_template_kwargs": {
+        "enable_thinking": true,
+        "preserve_thinking": true,
+        "reasoning_effort": "xhigh"
+      }
+    }
+  },
+  "target": {
+    "model_id": "Qwen/Qwen3.5-0.8B",
+    "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+    "weight_bytes": 1746942600,
+    "license": "apache-2.0",
+    "physical_gpus": [
+      3
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "practice": {
+    "repository": "RikiyaT/lm_understand-logs",
+    "revision": "4d09ba6d6a7e891dd8063974dfe81b3d78e3494f",
+    "files": {
+      "gsm8k_train.jsonl": {
+        "rows": 7469,
+        "sha256": "06d0dd560a908c2c2883bfb7d27ab55a87b213ff0d625f5cd734836aeac9a3e5",
+        "url": "https://raw.githubusercontent.com/RikiyaT/lm_understand-logs/4d09ba6d6a7e891dd8063974dfe81b3d78e3494f/exp8_math/practice/gsm8k_train.jsonl"
+      },
+      "math_train.jsonl": {
+        "rows": 7275,
+        "sha256": "abe7982b4d8c98394fe185fb152568a2c784a4157a75fe42b9c01857e71f0c6e",
+        "url": "https://raw.githubusercontent.com/RikiyaT/lm_understand-logs/4d09ba6d6a7e891dd8063974dfe81b3d78e3494f/exp8_math/practice/math_train.jsonl"
+      },
+      "aime.jsonl": {
+        "rows": 714,
+        "sha256": "9f6f26b89e65c7123e6106a9dce51137783eb339547f974f2ab1413165122f56",
+        "url": "https://raw.githubusercontent.com/RikiyaT/lm_understand-logs/4d09ba6d6a7e891dd8063974dfe81b3d78e3494f/exp8_math/practice/aime.jsonl"
+      }
+    }
+  },
+  "evaluation": {
+    "dataset": "HuggingFaceH4/MATH-500",
+    "revision": "6e4ed1a2a79af7d8630a6b768ec859cb5af4d3be",
+    "split": "test"
+  }
+}

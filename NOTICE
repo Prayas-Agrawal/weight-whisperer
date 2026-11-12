@@ -1,0 +1,25 @@
+Weight Whisperer is an independent open-weight experiment inspired by:
+https://rikiyat.github.io/blog/weight-space-programming/
+https://github.com/RikiyaT/lm_understand-logs
+Its task and tool interface follow that work's Qwen3.5-0.8B math experiment.
+
+Target and derived weight artifacts:
+Qwen/Qwen3.5-0.8B, revision 2fc06364715b967f1860aea9cf38778875588b17
+https://huggingface.co/Qwen/Qwen3.5-0.8B
+Each artifact modifies the target's final-block MLP down-projection.
+All model files reconstructed from the deltas retain the target's LICENSE.
+
+Editor:
+Qwen/Qwen3.8-Flash-Next-FP8, revision 7fb48d708ca6cd8eeed8f4db0433be18af96984f
+https://huggingface.co/Qwen/Qwen3.8-Flash-Next-FP8
+Qwen Community License 1.0 applies to that model.
+
+Datasets are downloaded, not redistributed:
+GSM8K: https://github.com/openai/grade-school-math
+MATH: https://github.com/hendrycks/math
+AIME practice: the pinned practice release identified in configs/data.json
+MATH-500: https://huggingface.co/datasets/HuggingFaceH4/MATH-500
+
+The released scores and weight deltas come from runs of an earlier revision of
+this harness; the code here is a cleaned-up version with the same prompt and
+settings.
